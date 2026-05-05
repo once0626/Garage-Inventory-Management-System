@@ -1,0 +1,68 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>THE CAR HOME</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<header class="top-header">
+    <h2>THE CAR HOME</h2>
+    <nav>
+        <a href="/" class="active">Dashboard</a>
+        <a href="/history">Stock History</a>
+    </nav>
+</header>
+
+<div class="main">
+
+<h1>Inventory Dashboard</h1>
+
+<div class="cards">
+<div class="card">Total Parts<br><b>{{ total_parts }}</b></div>
+<div class="card low-card">Low Stock Parts (≤ {{ low_limit }})<br><b>{{ low_stock_count }}</b></div>
+<div class="card">Total Cost Value<br><b>₹ {{ total_cost }}</b></div>
+<div class="card">Total Selling Value<br><b>₹ {{ total_sell }}</b></div>
+</div>
+
+<h2>Add New Part</h2>
+<form method="POST" action="/add" class="grid">
+<input name="name" placeholder="Part Name" required>
+<input name="company" placeholder="Company" required>
+<input name="category" placeholder="Category">
+<input name="stock" type="number" placeholder="Stock" required>
+<input name="cost" type="number" step="0.01" placeholder="Cost Price" required>
+<input name="sell" type="number" step="0.01" placeholder="Selling Price" required>
+<button>Add Part</button>
+</form>
+
+<table>
+<tr><th>ID</th><th>Name</th><th>Company</th><th>Category</th><th>Stock</th><th>Actions</th></tr>
+{% for p in parts %}
+<tr class="{% if p.stock <= low_limit %}low-row{% endif %}">
+<td>{{ p.id }}</td>
+<td>{{ p.name }}</td>
+<td>{{ p.company }}</td>
+<td>{{ p.category }}</td>
+<td>{{ p.stock }}</td>
+<td>
+<form method="POST" action="/update/{{ p.id }}" style="display:inline;">
+<input type="hidden" name="type" value="in">
+<input name="qty" type="number" placeholder="Qty" required>
+<button class="green">+</button>
+</form>
+<form method="POST" action="/update/{{ p.id }}" style="display:inline;">
+<input type="hidden" name="type" value="out">
+<input name="qty" type="number" placeholder="Qty" required>
+<button class="red">-</button>
+</form>
+<a href="/remove/{{ p.id }}" class="danger">Remove</a>
+</td>
+</tr>
+{% endfor %}
+</table>
+
+</div>
+</body>
+</html>

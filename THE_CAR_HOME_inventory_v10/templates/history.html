@@ -1,0 +1,36 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Stock History</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<header class="top-header">
+    <h2>THE CAR HOME</h2>
+    <nav>
+        <a href="/">Dashboard</a>
+        <a href="/history" class="active">Stock History</a>
+    </nav>
+</header>
+
+<div class="main">
+<h1>Stock History</h1>
+
+<table>
+<tr><th>Date</th><th>Part ID</th><th>Part</th><th>Action</th><th>Qty</th></tr>
+{% for r in records %}
+<tr>
+<td>{{ r.timestamp.strftime('%Y-%m-%d %H:%M') }}</td>
+<td>{{ r.part_id }}</td>
+<td>{{ r.part_name }}</td>
+<td>{{ r.action }}</td>
+<td>{{ r.qty }}</td>
+</tr>
+{% endfor %}
+</table>
+
+</div>
+</body>
+</html>
